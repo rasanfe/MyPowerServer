@@ -89,3 +89,6 @@ node_modules/
 dist/
 
 .svn/
+
+#credenciales locales (usar appsettings_example.json como plantilla)
+appsettings.json

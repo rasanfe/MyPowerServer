@@ -1,39 +1,45 @@
-﻿using System;
 using System.Text;
 
 namespace MyPowerServer
 {
+    /// <summary>
+    /// Utilidad estática para codificar/decodificar en <b>Base64Url</b> (Base64 apto para URLs).
+    /// La usan los servicios para recibir SQL y sintaxis sin que se rompan por caracteres
+    /// conflictivos. Es estática porque no guarda estado: entra texto, sale texto.
+    /// </summary>
     public static class CoderClass
     {
+        /// <summary>Texto plano → Base64Url.</summary>
         public static string Base64UrlEncode(string source)
         {
-            // Convertir el texto de entrada a un arreglo de bytes
+            // Texto → bytes (UTF-8).
             byte[] bytes = Encoding.UTF8.GetBytes(source);
-            
-            // Convertir los bytes a Base64
+
+            // Bytes → Base64 estándar.
             string encodedText = Convert.ToBase64String(bytes);
-            
-            // Reemplazar caracteres para ajustarse a Base64URL
+
+            // Base64 → Base64URL: + → -, / → _, y fuera el relleno '='.
             encodedText = encodedText.Replace("+", "-").Replace("/", "_").Replace("=", "");
-            
+
             return encodedText;
         }
-        
+
+        /// <summary>Base64Url → texto plano.</summary>
         public static string Base64UrlDecode(string source)
         {
-            // Reemplazar caracteres de Base64URL por los estándar de Base64
+            // Base64URL → Base64 estándar.
             source = source.Replace("-", "+").Replace("_", "/");
             while (source.Length % 4 != 0)
             {
-                source += "="; // Ajustar padding para Base64
+                source += "="; // Reponemos el relleno hasta que la longitud sea múltiplo de 4.
             }
 
-            // Convertir de Base64 a un arreglo de bytes
+            // Base64 → bytes.
             byte[] bytes = Convert.FromBase64String(source);
-            
-            // Convertir los bytes a texto UTF-8
+
+            // Bytes → texto (UTF-8).
             string decodedText = Encoding.UTF8.GetString(bytes);
-            
+
             return decodedText;
         }
     }
