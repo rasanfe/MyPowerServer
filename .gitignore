@@ -92,3 +92,5 @@ dist/
 
 #credenciales locales (usar appsettings_example.json como plantilla)
 appsettings.json
+# lanzador local de Claude (no versionar)
+iniciar_claude.bat
